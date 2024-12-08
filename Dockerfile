@@ -18,6 +18,6 @@ WORKDIR /app
 
 RUN chmod +x launch.sh
 
-EXPOSE 80 8081
+EXPOSE 8000 8081
 
 CMD ["/app/launch.sh"]
