@@ -1,5 +1,8 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
+const DEV_PORT = '8081'
+const PROD_PORT = '443'
+
 export function useSurge(...signalIds: string[]) {
   const signalRefs: Record<string, ReturnType<typeof ref>> = {}
   const isConnected = ref(false)
@@ -32,7 +35,7 @@ export function useSurge(...signalIds: string[]) {
 
   const connect = () => {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const port = import.meta.env.VITE_ENV === 'production' ? '8000' : '8081'
+    const port = import.meta.env.VITE_ENV === 'production' ? PROD_PORT : DEV_PORT
     ws = new WebSocket(`${protocol}//${window.location.hostname}:${port}`)
 
     ws.onopen = () => {
