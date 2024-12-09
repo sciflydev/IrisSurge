@@ -23,12 +23,11 @@ cluster_data = computed(() -> begin
     return data
 end, :data_clusters)
 
-# Connect to websocket
-map(attach_websocket, [no_of_clusters, no_of_iterations, cluster_data])
+# Expose signals via ws
 
 # Start server
 println("Starting server...")
-server = start_server(8080)
+server = start_server([no_of_clusters, no_of_iterations, cluster_data], 8080)
 println("Server running on http://localhost:8080")
 while true
     sleep(1)

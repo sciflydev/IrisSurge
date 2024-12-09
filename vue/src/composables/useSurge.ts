@@ -1,6 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const DEV_PORT = '8081'
+const DEV_PORT = '8080'
 const PROD_PORT = '443'
 
 export function useSurge(...signalIds: string[]) {
