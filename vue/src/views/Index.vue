@@ -1,26 +1,38 @@
 <template>
   <div class="grid grid-cols-12 container mx-auto px-4 flex gap-8" style="width: 1200px">
-    <div class="col-span-12 grid grid-cols-12">
-      <div class="col-span-10 flex gap-8">
+    <div class="flex col-span-12 grid grid-cols-12 gap-8">
+      <div class="bg-neutral-800 rounded-lg p-4 col-span-12 gap-8">
+        <h1 class="text-2xl font-sans font-bold" style="text-align: center">
+          Iris flower clustering
+        </h1>
+      </div>
+    </div>
+
+    <div class="col-span-12 grid grid-cols-12 gap-8">
+      <div class="col-span-10 grid grid-cols-2 gap-8">
         <div class="bg-neutral-800 rounded-lg p-4">
-          <div class="h-[420px] w-[420px]">
-            <h5 style="text-align: center">Species</h5>
-            <ScatterChart
-              v-if="clusterData.value"
-              :chartData="speciesChartData"
-              :options="chartOptions"
-            />
+          <div class="relative w-full pb-[100%]">
+            <div class="absolute inset-0">
+              <h5 class="text-center">Species</h5>
+              <ScatterChart
+                v-if="clusterData.value"
+                :chartData="speciesChartData"
+                :options="chartOptions"
+              />
+            </div>
           </div>
         </div>
         <div class="bg-neutral-800 rounded-lg p-4">
-          <div class="h-[420px] w-[420px]">
-            <h5 style="text-align: center">K-means clusters</h5>
-            <ScatterChart
-              v-if="clusterData.value"
-              :key="noOfClusters.value"
-              :chartData="kmeansChartData"
-              :options="chartOptions"
-            />
+          <div class="relative w-full pb-[100%]">
+            <div class="absolute inset-0">
+              <h5 class="text-center">K-means clusters</h5>
+              <ScatterChart
+                v-if="clusterData.value"
+                :key="noOfClusters.value"
+                :chartData="kmeansChartData"
+                :options="chartOptions"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -217,7 +229,7 @@ const chartOptions = computed(() => ({
       },
       grid: {
         color: 'rgba(255, 255, 255, 0.1)',
-      }
+      },
     },
     y: {
       title: {
@@ -229,8 +241,8 @@ const chartOptions = computed(() => ({
         color: 'white',
       },
       grid: {
-        color: 'rgba(255, 255, 255, 0.1)', 
-      }
+        color: 'rgba(255, 255, 255, 0.1)',
+      },
     },
   },
   plugins: {
