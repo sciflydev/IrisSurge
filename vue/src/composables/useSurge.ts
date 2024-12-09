@@ -32,7 +32,8 @@ export function useSurge(...signalIds: string[]) {
 
   const connect = () => {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    ws = new WebSocket(`${protocol}//${window.location.hostname}:8081`)
+    const port = import.meta.env.VITE_ENV === 'production' ? '8000' : '8081'
+    ws = new WebSocket(`${protocol}//${window.location.hostname}:${port}`)
 
     ws.onopen = () => {
       isConnected.value = true

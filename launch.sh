@@ -1,5 +1,11 @@
 #!/bin/bash
 
-(cd julia && julia --project main.jl) &
-cd vue && npx serve dist -s -l 8000
+if [ "$VITE_ENV" = "production" ]; then
+    cd julia && julia --project main.jl
+else
+    cd julia && julia --project main.jl & 
+    cd vue && yarn dev
+    
+    wait
+fi
 

@@ -1,0 +1,57 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Node.js/Vue
+vue/node_modules
+vue/.vscode
+vue/dist
+vue/coverage
+vue/*.log
+vue/npm-debug.log*
+vue/yarn-debug.log*
+vue/yarn-error.log*
+vue/pnpm-debug.log*
+vue/.env
+vue/.env.*
+vue/*.local
+
+# Julia
+# julia/Manifest.toml
+# julia/*.jl.*.cov
+# julia/*.jl.cov
+# julia/*.jl.mem
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Documentation
+README.md
+CHANGELOG.md
+LICENSE
+*.md
+
+# Test files
+**/*.spec.ts
+**/*.test.ts
+**/__tests__
