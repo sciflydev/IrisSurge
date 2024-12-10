@@ -16,11 +16,11 @@ function perform_clustering(nclusters, niters)
     feats = Matrix(data[:, [c for c in features]])' |> collect
     result = kmeans(feats, nclusters; maxiter=niters)
     data[!, :Cluster] = assignments(result)
+    data
 end
 
 cluster_data = computed(() -> begin
     perform_clustering(no_of_clusters(), no_of_iterations())
-    return data
 end, :data_clusters)
 
 # Expose signals via ws
