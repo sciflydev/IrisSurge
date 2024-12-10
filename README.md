@@ -1,4 +1,4 @@
-An example application using [Surge.jl](https://github.com/sciflydev/surge.jl) as a Julia backend. See it live [here](https://iris.carryall.capp)
+An example application using [Surge.jl](https://github.com/sciflydev/surge.jl) as a Julia backend. See it live [here](https://iris.carryall.app).
 
 Surge exposes state variables from the Julia process via websockets, enabling any client to retrieve these variables and update them to trigger routines.
 
