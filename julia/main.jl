@@ -23,12 +23,12 @@ cluster_data = computed(() -> begin
     perform_clustering(no_of_clusters(), no_of_iterations())
 end, :data_clusters)
 
-# Expose signals via ws
-
-# Start server
+# Start server in asynchronous mode to make the REPL usable
 println("Starting server...")
-server = start_server([no_of_clusters, no_of_iterations, cluster_data], 8080)
+server = start_server([no_of_clusters, no_of_iterations, cluster_data], 8080, async=true)
 println("Server running on http://localhost:8080")
+# Interrupt the loop with Ctrl+C to stop the server and free the port
 while true
     sleep(1)
 end
+stop_server(server)
