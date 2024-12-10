@@ -15,7 +15,7 @@
             <div class="absolute inset-0">
               <h5 class="text-center">Species</h5>
               <ScatterChart
-                v-if="clusterData.value"
+                v-if="data_clusters.value"
                 :chartData="speciesChartData"
                 :options="chartOptions"
               />
@@ -27,8 +27,8 @@
             <div class="absolute inset-0">
               <h5 class="text-center">K-means clusters</h5>
               <ScatterChart
-                v-if="clusterData.value"
-                :key="noOfClusters.value"
+                v-if="data_clusters.value"
+                :key="no_of_clusters.value"
                 :chartData="kmeansChartData"
                 :options="chartOptions"
               />
@@ -41,16 +41,16 @@
         <div>
           <label class="block mb-2 pb-2">Number of clusters</label>
           <div class="flex gap-4">
-            <UBadge :label="noOfClusters.value" class="w-8 center" />
-            <USlider v-model.number="noOfClusters.value" :min="2" :max="6" />
+            <UBadge :label="no_of_clusters.value" class="w-8 center" />
+            <USlider v-model.number="no_of_clusters.value" :min="2" :max="6" />
           </div>
         </div>
 
         <div>
           <label class="block mb-2 pb-2">Iterations</label>
           <div class="flex gap-4">
-            <UBadge :label="noOfIterations.value" class="w-8 center" />
-            <USlider v-model.number="noOfIterations.value" :min="5" :max="99" />
+            <UBadge :label="no_of_iterations.value" class="w-8 center" />
+            <USlider v-model.number="no_of_iterations.value" :min="5" :max="99" />
           </div>
         </div>
 
@@ -81,17 +81,17 @@
 import { ScatterChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
 import { computed, ref } from 'vue'
-import { useSurge } from '@/composables/useSurge'
+import { useSurge } from 'surgejs'
 
 // Register Chart.js components
 Chart.register(...registerables)
 
-const {
-  data_clusters: clusterData,
-  no_of_clusters: noOfClusters,
-  no_of_iterations: noOfIterations,
-  isLoading,
-} = useSurge('data_clusters', 'no_of_clusters', 'no_of_iterations') as any
+const { data_clusters, no_of_clusters, no_of_iterations, isLoading } = useSurge(
+  ['data_clusters', 'no_of_clusters', 'no_of_iterations'],
+  {
+    port: process.env.NODE_ENV === 'production' ? '443' : '8080',
+  },
+) as any
 
 const featureOptions = ref([
   { label: 'Sepal Length', value: 'SepalLength' },
@@ -112,19 +112,19 @@ const columns = [
 ]
 
 const transformedData = computed(() => {
-  if (!clusterData.value) return []
+  if (!data_clusters.value) return []
 
   const data = []
-  const length = clusterData.value.SepalLength.length
+  const length = data_clusters.value.SepalLength.length
 
   for (let i = 0; i < length; i++) {
     data.push({
       id: i.toString(),
-      sepalLength: clusterData.value.SepalLength[i],
-      sepalWidth: clusterData.value.SepalWidth[i],
-      petalLength: clusterData.value.PetalLength[i],
-      petalWidth: clusterData.value.PetalWidth[i],
-      cluster: clusterData.value.Cluster[i],
+      sepalLength: data_clusters.value.SepalLength[i],
+      sepalWidth: data_clusters.value.SepalWidth[i],
+      petalLength: data_clusters.value.PetalLength[i],
+      petalWidth: data_clusters.value.PetalWidth[i],
+      cluster: data_clusters.value.Cluster[i],
     })
   }
 
@@ -139,31 +139,31 @@ const SPECIES_COLORS = {
 
 const speciesVectors = computed(() => ({
   setosa: {
-    data: clusterData.value?.Species.map((s, i) =>
+    data: data_clusters.value?.Species.map((s, i) =>
       s === 'setosa'
         ? {
-            x: clusterData.value[selectedXFeature.value][i],
-            y: clusterData.value[selectedYFeature.value][i],
+            x: data_clusters.value[selectedXFeature.value][i],
+            y: data_clusters.value[selectedYFeature.value][i],
           }
         : null,
     ).filter(Boolean),
   },
   versicolor: {
-    data: clusterData.value?.Species.map((s, i) =>
+    data: data_clusters.value?.Species.map((s, i) =>
       s === 'versicolor'
         ? {
-            x: clusterData.value[selectedXFeature.value][i],
-            y: clusterData.value[selectedYFeature.value][i],
+            x: data_clusters.value[selectedXFeature.value][i],
+            y: data_clusters.value[selectedYFeature.value][i],
           }
         : null,
     ).filter(Boolean),
   },
   virginica: {
-    data: clusterData.value?.Species.map((s, i) =>
+    data: data_clusters.value?.Species.map((s, i) =>
       s === 'virginica'
         ? {
-            x: clusterData.value[selectedXFeature.value][i],
-            y: clusterData.value[selectedYFeature.value][i],
+            x: data_clusters.value[selectedXFeature.value][i],
+            y: data_clusters.value[selectedYFeature.value][i],
           }
         : null,
     ).filter(Boolean),
@@ -171,12 +171,12 @@ const speciesVectors = computed(() => ({
 }))
 
 const kmeansVectors = computed(() =>
-  Array.from({ length: noOfClusters.value }, (_, k) =>
-    clusterData.value?.Cluster.map((c, i) =>
-      c <= noOfClusters.value && c === k + 1
+  Array.from({ length: no_of_clusters.value }, (_, k) =>
+    data_clusters.value?.Cluster.map((c, i) =>
+      c <= no_of_clusters.value && c === k + 1
         ? {
-            x: clusterData.value[selectedXFeature.value][i],
-            y: clusterData.value[selectedYFeature.value][i],
+            x: data_clusters.value[selectedXFeature.value][i],
+            y: data_clusters.value[selectedYFeature.value][i],
           }
         : null,
     ).filter(Boolean),
@@ -210,7 +210,7 @@ const kmeansChartData = computed(() => ({
     backgroundColor:
       k < 3
         ? Object.values(SPECIES_COLORS)[k]
-        : `hsla(${(k * 360) / noOfClusters.value}, 70%, 60%, 0.5)`,
+        : `hsla(${(k * 360) / no_of_clusters.value}, 70%, 60%, 0.5)`,
   })),
 }))
 

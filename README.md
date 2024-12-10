@@ -2,7 +2,7 @@ An example application using [Surge.jl](https://github.com/sciflydev/surge.jl) a
 
 Surge exposes state variables from the Julia process via websockets, enabling any client to retrieve these variables and update them to trigger routines.
 
-The frontend is built in VueJS and uses the composable `useSurge` to sync values between the backend and the browser.
+The frontend is built in VueJS and uses the package [surgejs](https://github.com/sciflydev/surgejs) to sync values between the backend and the browser.
 
 To run the app, go into each folder and install the dependencies as
 
